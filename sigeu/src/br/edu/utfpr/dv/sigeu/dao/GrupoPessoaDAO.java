@@ -58,11 +58,15 @@ public class GrupoPessoaDAO extends HibernateDAO<GrupoPessoa> {
 	public void preCriacao(GrupoPessoa o) {
 		Long val = this.gerarNovoId();
 		o.setIdGrupoPessoa(val.intValue());
-		o.setNome(o.getNome().toUpperCase().trim());
+		extracted(o);
 	}
 
 	@Override
 	public void preAlteracao(GrupoPessoa o) {
+		extracted(o);
+	}
+
+	private void extracted(GrupoPessoa o) {
 		o.setNome(o.getNome().toUpperCase().trim());
 	}
 

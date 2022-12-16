@@ -30,7 +30,7 @@ public class CategoriaItemReservaDAO extends HibernateDAO<CategoriaItemReserva> 
 		String hql = "from CategoriaItemReserva o where o.idCampus.idCampus = :idCampus and upper(o.nome) = upper(:des)";
 		Query q = session.createQuery(hql);
 		q.setString("des", descricao);
-		q.setInteger("idCampus", campus.getIdCampus());
+		extracted(campus, q);
 		return (CategoriaItemReserva) q.uniqueResult();
 	}
 
@@ -38,7 +38,7 @@ public class CategoriaItemReservaDAO extends HibernateDAO<CategoriaItemReserva> 
 	public void preCriacao(CategoriaItemReserva o) {
 		Long val = this.gerarNovoId();
 		o.setIdCategoria(val.intValue());
-		o.setNome(o.getNome().toUpperCase().trim());
+		extracted2(o);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class CategoriaItemReservaDAO extends HibernateDAO<CategoriaItemReserva> 
 		hql.append("ORDER BY o.ativo DESC, upper(o.nome) ASC ");
 
 		Query q = session.createQuery(hql.toString());
-		q.setInteger("idCampus", campus.getIdCampus());
+		extracted(campus, q);
 
 		if (textoPesquisa != null && textoPesquisa.trim().length() > 0) {
 			q.setString("q", "%" + textoPesquisa + "%");
@@ -77,6 +77,8 @@ public class CategoriaItemReservaDAO extends HibernateDAO<CategoriaItemReserva> 
 		return this.pesquisaObjetos(q, limit);
 	}
 
+	
+
 	public List<CategoriaItemReserva> pesquisa(Campus campus, String textoPesquisa, int limit) {
 		Boolean ativo = null;
 		return this.pesquisa(campus, null, ativo, limit);
@@ -84,6 +86,14 @@ public class CategoriaItemReservaDAO extends HibernateDAO<CategoriaItemReserva> 
 
 	@Override
 	public void preAlteracao(CategoriaItemReserva o) {
+		extracted2(o);
+	}
+
+	private void extracted(Campus campus, Query q) {
+		q.setInteger("idCampus", campus.getIdCampus());
+	}
+
+	private void extracted2(CategoriaItemReserva o) {
 		o.setNome(o.getNome().toUpperCase().trim());
 	}
 

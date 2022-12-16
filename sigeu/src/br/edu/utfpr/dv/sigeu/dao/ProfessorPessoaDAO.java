@@ -16,7 +16,7 @@ public class ProfessorPessoaDAO extends HibernateDAO<ProfessorPessoa> {
 
 	@Override
 	public ProfessorPessoa encontrePorId(Integer id) {
-		String hql = "from ProfessorPessoa o where o.professor.idProfessor = :id";
+		String hql = extracted();
 		Query q = session.createQuery(hql);
 		q.setInteger("id", id);
 		return (ProfessorPessoa) q.uniqueResult();
@@ -30,10 +30,15 @@ public class ProfessorPessoaDAO extends HibernateDAO<ProfessorPessoa> {
 	}
 
 	public ProfessorPessoa encontrePorProfessor(Professor professor) {
-		String hql = "from ProfessorPessoa o where o.professor.idProfessor = :id";
+		String hql = extracted();
 		Query q = session.createQuery(hql);
 		q.setInteger("id", professor.getIdProfessor());
 		return (ProfessorPessoa) q.uniqueResult();
+	}
+
+	private String extracted() {
+		String hql = "from ProfessorPessoa o where o.professor.idProfessor = :id";
+		return hql;
 	}
 
 	@Override

@@ -49,49 +49,41 @@ public class TimetableDAO extends HibernateDAO<Timetable> {
 
 				// CARD
 				String sql = "DELETE FROM card WHERE id_timetable = :id";
-				Query delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
+
 
 				sql = "DELETE FROM lesson WHERE id_timetable = :id";
-				delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
 
 				sql = "DELETE FROM period WHERE id_timetable = :id";
-				delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
 
 				sql = "DELETE FROM classroom WHERE id_timetable = :id";
-				delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
 
 				sql = "DELETE FROM teacher WHERE id_timetable = :id";
-				delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
 
 				sql = "DELETE FROM subject WHERE id_timetable = :id";
-				delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
 
 				sql = "DELETE FROM clazz WHERE id_timetable = :id";
-				delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
 
 				sql = "DELETE FROM timetable WHERE id_timetable = :id";
-				delete = session.createSQLQuery(sql);
-				delete.setInteger("id", timetable.getIdTimetable());
-				delete.executeUpdate();
+				extracted(timetable, sql);
 
 			}
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	private void extracted(Timetable timetable, String sql) {
+		Query delete;
+		delete = session.createSQLQuery(sql);
+		delete.setInteger("id", timetable.getIdTimetable());
+		delete.executeUpdate();
 	}
 
 	@Override

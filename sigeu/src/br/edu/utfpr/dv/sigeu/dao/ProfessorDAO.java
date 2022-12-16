@@ -40,7 +40,7 @@ public class ProfessorDAO extends HibernateDAO<Professor> {
 		q.setString("codigo", codigo);
 		q.setInteger("id", campus.getIdCampus());
 		
-		Professor p =(Professor) q.uniqueResult(); 
+		Professor p = (Professor) q.uniqueResult(); 
 		
 		if(p!=null){
 			Hibernate.initialize(p.getProfessorPessoa());

@@ -23,10 +23,12 @@ public class FeriadoDAO extends HibernateDAO<Feriado> {
 			return null;
 		}
 		String hql = "from Feriado o where o.id = :id order by o.data";
-		Query q = session.createQuery(hql);
+		Query q = extracted3(hql);
 		q.setInteger("id", id);
 		return (Feriado) q.uniqueResult();
 	}
+
+	
 
 	public Feriado encontrePorDescricao(Campus campus, String descricao) {
 		String hql = "from Feriado o where o.idCampus.idCampus = :idCampus AND upper(o.descricao) = upper(:des) order by o.data";
@@ -53,12 +55,12 @@ public class FeriadoDAO extends HibernateDAO<Feriado> {
 			return this.pesquisa(campus, limit);
 		}
 		String hql = "from Feriado o where (upper(o.descricao) like upper(:q)) and o.idCampus.idCampus = :idCampus order by o.data ASC";
-		Query q = session.createQuery(hql);
+		Query q = extracted3(hql);
 		q.setString("q", "%" + textoPesquisa + "%");
-		q.setInteger("idCampus", campus.getIdCampus());
+		extracted(campus, q);
 
 		if (limit > 0) {
-			q.setMaxResults(limit);
+			extracted2(limit, q);
 		}
 
 		List<?> list = q.list();
@@ -77,10 +79,10 @@ public class FeriadoDAO extends HibernateDAO<Feriado> {
 	public List<Feriado> pesquisa(Campus campus, int limit) {
 		String hql = "from Feriado o WHERE o.idCampus.idCampus = :idCampus order by o.data ASC";
 		Query q = session.createQuery(hql);
-		q.setInteger("idCampus", campus.getIdCampus());
+		extracted(campus, q);
 
 		if (limit > 0) {
-			q.setMaxResults(limit);
+			extracted2(limit, q);
 		}
 		List<?> list = q.list();
 
@@ -99,7 +101,7 @@ public class FeriadoDAO extends HibernateDAO<Feriado> {
 		String hql = "from Feriado o WHERE o.idCampus.idCampus = :idCampus AND o.data between :d1 and :d2 order by o.data ASC";
 
 		Query q = session.createQuery(hql);
-		q.setInteger("idCampus", campus.getIdCampus());
+		extracted(campus, q);
 		q.setDate("d1", dataInicial);
 		q.setDate("d2", dataFinal);
 		List<?> list = q.list();
@@ -115,6 +117,19 @@ public class FeriadoDAO extends HibernateDAO<Feriado> {
 		return null;
 	}
 
+	private void extracted(Campus campus, Query q) {
+		q.setInteger("idCampus", campus.getIdCampus());
+	}
+
+	private void extracted2(int limit, Query q) {
+		q.setMaxResults(limit);
+	}
+
+	private Query extracted3(String hql) {
+		Query q = session.createQuery(hql);
+		return q;
+	}
+	
 	public List<Feriado> pesquisa(Campus campus, Date data) {
 		return this.pesquisa(campus, data, data);
 	}

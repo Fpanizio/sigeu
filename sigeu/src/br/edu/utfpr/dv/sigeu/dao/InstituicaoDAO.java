@@ -18,7 +18,7 @@ public class InstituicaoDAO extends HibernateDAO<Instituicao> {
 	@Override
 	public Instituicao encontrePorId(Integer id) {
 		String hql = "from Instituicao o where o.idInstituicao = :id";
-		Query q = session.createQuery(hql);
+		Query q = extracted(hql);
 		q.setInteger("id", id);
 		return (Instituicao) q.uniqueResult();
 	}
@@ -48,7 +48,7 @@ public class InstituicaoDAO extends HibernateDAO<Instituicao> {
 		List<?> list = q.list();
 
 		if (list.size() > 0) {
-			List<Instituicao> retorno = new ArrayList<Instituicao>();
+			List<Instituicao> retorno = extracted2();
 
 			for (Object o : list) {
 				retorno.add((Instituicao) o);
@@ -60,7 +60,7 @@ public class InstituicaoDAO extends HibernateDAO<Instituicao> {
 
 	public List<Instituicao> pesquisa(int limit) {
 		String hql = "from Instituicao o order by o.ativo DESC, upper(o.nome) ASC";
-		Query q = session.createQuery(hql);
+		Query q = extracted(hql);
 		if (limit > 0) {
 			q.setMaxResults(limit);
 		}
@@ -68,7 +68,7 @@ public class InstituicaoDAO extends HibernateDAO<Instituicao> {
 		List<?> list = q.list();
 
 		if (list.size() > 0) {
-			List<Instituicao> retorno = new ArrayList<Instituicao>();
+			List<Instituicao> retorno = extracted2();
 
 			for (Object o : list) {
 				retorno.add((Instituicao) o);
@@ -78,8 +78,18 @@ public class InstituicaoDAO extends HibernateDAO<Instituicao> {
 		return null;
 	}
 
+	private Query extracted(String hql) {
+		Query q = session.createQuery(hql);
+		return q;
+	}
+
+	private List<Instituicao> extracted2() {
+		List<Instituicao> retorno = new ArrayList<Instituicao>();
+		return retorno;
+	}
+
 	@Override
 	public void preAlteracao(Instituicao o) {
-		
+
 	}
 }

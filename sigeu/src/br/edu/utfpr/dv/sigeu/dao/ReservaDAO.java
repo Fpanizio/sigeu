@@ -31,13 +31,7 @@ public class ReservaDAO extends HibernateDAO<Reserva> {
 		Reserva r = (Reserva) q.uniqueResult();
 
 		if (r != null) {
-			Hibernate.initialize(r.getIdItemReserva());
-			Hibernate.initialize(r.getIdItemReserva().getIdCategoria());
-			Hibernate.initialize(r.getIdPessoa());
-			Hibernate.initialize(r.getIdTransacao());
-			Hibernate.initialize(r.getIdTipoReserva());
-			Hibernate.initialize(r.getIdCampus());
-			Hibernate.initialize(r.getIdUsuario());
+			extracted(r);
 		}
 		return r;
 	}
@@ -283,13 +277,7 @@ public class ReservaDAO extends HibernateDAO<Reserva> {
 		List<Reserva> list = this.pesquisaObjetos(q, 0);
 
 		for (Reserva r : list) {
-			Hibernate.initialize(r.getIdItemReserva());
-			Hibernate.initialize(r.getIdItemReserva().getIdCategoria());
-			Hibernate.initialize(r.getIdPessoa());
-			Hibernate.initialize(r.getIdTransacao());
-			Hibernate.initialize(r.getIdTipoReserva());
-			Hibernate.initialize(r.getIdCampus());
-			Hibernate.initialize(r.getIdUsuario());
+			extracted(r);
 		}
 
 		return list;
@@ -317,13 +305,7 @@ public class ReservaDAO extends HibernateDAO<Reserva> {
 		List<Reserva> list = this.pesquisaObjetos(q, 0);
 
 		for (Reserva r : list) {
-			Hibernate.initialize(r.getIdItemReserva());
-			Hibernate.initialize(r.getIdItemReserva().getIdCategoria());
-			Hibernate.initialize(r.getIdPessoa());
-			Hibernate.initialize(r.getIdTransacao());
-			Hibernate.initialize(r.getIdTipoReserva());
-			Hibernate.initialize(r.getIdCampus());
-			Hibernate.initialize(r.getIdUsuario());
+			extracted(r);
 		}
 
 		return list;
@@ -356,16 +338,20 @@ public class ReservaDAO extends HibernateDAO<Reserva> {
 		List<Reserva> list = this.pesquisaObjetos(q, 0);
 
 		for (Reserva r : list) {
-			Hibernate.initialize(r.getIdItemReserva());
-			Hibernate.initialize(r.getIdItemReserva().getIdCategoria());
-			Hibernate.initialize(r.getIdPessoa());
-			Hibernate.initialize(r.getIdTransacao());
-			Hibernate.initialize(r.getIdTipoReserva());
-			Hibernate.initialize(r.getIdCampus());
-			Hibernate.initialize(r.getIdUsuario());
+			extracted(r);
 		}
 
 		return list;
+	}
+
+	private void extracted(Reserva r) {
+		Hibernate.initialize(r.getIdItemReserva());
+		Hibernate.initialize(r.getIdItemReserva().getIdCategoria());
+		Hibernate.initialize(r.getIdPessoa());
+		Hibernate.initialize(r.getIdTransacao());
+		Hibernate.initialize(r.getIdTipoReserva());
+		Hibernate.initialize(r.getIdCampus());
+		Hibernate.initialize(r.getIdUsuario());
 	}
 
 }
